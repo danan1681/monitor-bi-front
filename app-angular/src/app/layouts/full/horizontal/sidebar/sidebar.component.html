@@ -1,0 +1,30 @@
+@if(mobileQuery.matches){
+<div class="horizontal-sidebar p-y-16 b-b-1">
+  <div class="container">
+    <div class="row">
+      <div class="horizontal-navbar hstack align-items-center col-md-11">
+        @for(item of navItems; track item){
+          <app-horizontal-nav-item [item]="item" class="parentBox {{ item.ddType }}">
+          </app-horizontal-nav-item>
+        }
+      </div>
+      <button mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications">
+        <img
+          src="/assets/images/profile/user-1.jpg"
+          class="rounded-circle object-cover icon-35 profile-dd"
+          width="35"
+        />
+      </button>
+      <mat-menu #profilemenu="matMenu" xPosition="before" class="topbar-dd cardWithShadow container">
+        <h2>
+          {{localStorage.getItem('nombreCompleto')}}
+        </h2>
+        <div class="p-y-12 p-x-32">
+          <a [routerLink]="['/authentication/side-login']" mat-stroked-button color="primary" class="w-100">Cerrar Sesión</a
+          >
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</div>
+}

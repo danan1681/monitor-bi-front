@@ -1,0 +1,432 @@
+<mat-dialog-content *ngIf="opcionSelect === 'crearNuevoUsuario'">
+  <h2 class="mb-4"><strong> {{ textoDialog }} </strong></h2>
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="crearUsuarioForm">
+        <div class="row">
+
+          <!-- Columna de Campos del Usuario -->
+          <div class="col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Nombre(s)</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="nombreNuevo" placeholder="Ingrese su nombre"/>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('nombreNuevo')?.invalid && crearUsuarioForm.get('nombreNuevo')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Paterno</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="apPaternoNuevo"
+                         placeholder="Ingrese su apellido paterno"/>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('apPaternoNuevo')?.invalid && crearUsuarioForm.get('apPaternoNuevo')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Materno</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="apMaternoNuevo"
+                         placeholder="Ingrese su apellido materno"/>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('apMaternoNuevo')?.invalid && crearUsuarioForm.get('apMaternoNuevo')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Rol</mat-label>
+                  <mat-icon matPrefix>assignment_ind</mat-icon>
+                  <mat-select formControlName="idRolNuevo" placeholder="Seleccione un rol">
+                    <mat-option *ngFor="let rol of roles" [value]="rol">{{rol.nombre_rol}}</mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('idRolNuevo')?.invalid && crearUsuarioForm.get('idRolNuevo')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+<!--              <div class="col-lg-6">-->
+<!--                <mat-form-field appearance="outline" class="w-100">-->
+<!--                  <mat-label>CURP</mat-label>-->
+<!--                  <mat-icon matPrefix>badge</mat-icon>-->
+<!--                  <input type="text" matInput formControlName="curpNuevo"-->
+<!--                         placeholder="Ingrese su CURP" (input)="crearUsuarioForm.controls['curpNuevo'].setValue(crearUsuarioForm.controls['curpNuevo'].value.toUpperCase().trim(), { emitEvent: false })" />-->
+<!--                  <mat-error *ngIf="crearUsuarioForm.get('curpNuevo')?.errors?.['required']">-->
+<!--                    Este campo es obligatorio.-->
+<!--                  </mat-error>-->
+<!--                  <mat-error *ngIf="crearUsuarioForm.get('curpNuevo')?.errors?.['pattern']">-->
+<!--                    Formato de CURP inválido. Debe ser de 18 caracteres en mayúsculas.-->
+<!--                  </mat-error>-->
+<!--                  <mat-error *ngIf="crearUsuarioForm.get('curpNuevo')?.errors?.['curpExistente']">-->
+<!--                    CURP ya esta registrado-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Teléfono</mat-label>
+                  <mat-icon matPrefix>phone</mat-icon>
+                  <input type="text" matInput formControlName="telefonoNuevo"
+                         placeholder="Ingrese su teléfono" minlength="10" maxlength="10"/>
+                  <mat-error *ngIf="crearUsuarioForm.get('telefonoNuevo')?.errors?.['required']">
+                  Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('telefonoNuevo')?.errors?.['minlength']">
+                    El teléfono celular debe tener 10 dígitos.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="crearUsuarioForm.get('telefonoNuevo')?.errors?.['pattern']">
+                    El teléfono celular solo puede contener números.
+                  </mat-error>
+                  <mat-error *ngIf="crearUsuarioForm.get('telefonoNuevo')?.errors?.['telefonoExistente']">
+                    Teléfono ya esta registrado
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Correo Electrónico</mat-label>
+                  <mat-icon matPrefix>mail</mat-icon>
+                  <input type="text" matInput formControlName="correoNuevo"
+                         placeholder="Ingrese su correo electrónico"/>
+                  <mat-error *ngIf="crearUsuarioForm.get('correoNuevo')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error *ngIf="crearUsuarioForm.get('correoNuevo')?.errors?.['email']">
+                    Formato de correo incorrecto.
+                  </mat-error>
+                  <mat-error *ngIf="crearUsuarioForm.get('correoNuevo')?.errors?.['correoExistente']">
+                    Correo ya esta registrado
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Visible solo si EL USUARIO LOGEADO es 27 -->
+              <div class="col-lg-6" *ngIf="clave_rol_usuario === 27">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Evento</mat-label>
+                  <mat-icon matPrefix>event</mat-icon>
+                  <mat-select formControlName="idEventoNuevo" placeholder="Seleccione un evento">
+                    <!-- Como 'eventos' es un signal, se lee con eventos() -->
+                    <mat-option *ngFor="let ev of eventos()" [value]="ev._id || ev._id">
+                      {{ ev.nombre || ev.nombre }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="crearUsuarioForm.get('idEventoNuevo')?.hasError('required')">
+                    Este campo es obligatorio para tu rol.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Contraseña</mat-label>
+                  <mat-icon matPrefix>lock</mat-icon>
+                  <input type="password" matInput formControlName="contrasenaNuevo1"
+                         placeholder="Ingrese una contraseña segura" minlength="8"/>
+                  <mat-error *ngIf="crearUsuarioForm.get('contrasenaNuevo1')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error *ngIf="crearUsuarioForm.get('contrasenaNuevo1')?.hasError('minlength')">
+                    La contraseña debe tener al menos 8 caracteres.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Confirmar Contraseña</mat-label>
+                  <mat-icon matPrefix>lock</mat-icon>
+                  <input type="password" matInput formControlName="contrasenaNuevo2"
+                         placeholder="Confirme su contraseña"/>
+                  <mat-error *ngIf="crearUsuarioForm.get('contrasenaNuevo2')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error *ngIf="crearUsuarioForm.get('contrasenaNuevo2')?.errors?.['passwordMatch']">
+                    Las contraseñas no coinciden.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Acciones del Formulario -->
+              <mat-dialog-actions class="mt-4">
+                <button mat-flat-button color="primary" (click)="crearUsuario()" [disabled]="!crearUsuarioForm.valid || isSubmitting">
+                  Crear Nuevo
+                </button>
+                <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+              </mat-dialog-actions>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+
+
+<!-- INICIA ACTUALIZAR USUARIO -->
+<mat-dialog-content *ngIf="opcionSelect === 'editarUsuario' ">
+  <h2><strong> Actualizar Usuario </strong></h2>
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="actualizarUsuarioForm" class="">
+        <div class="row">
+
+          <div class="col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Nombre(s)</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="nombreActualizar" placeholder="Ingrese su nombre"/>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('nombreActualizar')?.errors?.['required']">Este campo es
+                    obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Paterno</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="apPaternoActualizar" placeholder="Ingrese su nombre"/>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('apPaternoActualizar')?.errors?.['required']">Este campo
+                    es
+                    obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Materno</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="apMaternoActualizar" placeholder="Ingrese su nombre"/>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('apMaternoActualizar')?.errors?.['required']">Este campo
+                    es
+                    obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Rol</mat-label>
+                  <mat-icon matPrefix>assignment_ind</mat-icon>
+                  <mat-select formControlName="idRolActualizar" placeholder="Seleccione un rol">
+                    <mat-option *ngFor="let rol of roles" [value]="rol.clave_rol">{{ rol.nombre_rol }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('idRolActualizar')?.errors?.['required']">Este campo es
+                    obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+<!--              <div class="col-lg-6">-->
+<!--                <mat-form-field appearance="outline" class="w-100">-->
+<!--                  <mat-label>CURP</mat-label>-->
+<!--                  <mat-icon matPrefix>badge</mat-icon>-->
+<!--                  <input type="text" matInput formControlName="curpActualizar" placeholder="Ingrese su CURP"-->
+<!--                         (input)="actualizarUsuarioForm.controls['curpActualizar'].setValue(actualizarUsuarioForm.controls['curpActualizar'].value.toUpperCase().trim(), { emitEvent: false })" />-->
+<!--                  <mat-error *ngIf="actualizarUsuarioForm.get('curpActualizar')?.errors?.['required']">-->
+<!--                    Este campo es obligatorio.-->
+<!--                  </mat-error>-->
+<!--                  <mat-error *ngIf="actualizarUsuarioForm.get('curpActualizar')?.errors?.['pattern']">-->
+<!--                    Formato de CURP inválido. Debe ser de 18 caracteres en mayúsculas.-->
+<!--                  </mat-error>-->
+<!--                  <mat-error *ngIf="actualizarUsuarioForm.get('curpActualizar')?.errors?.['curpExistente']">-->
+<!--                    CURP ya esta registrado-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Teléfono</mat-label>
+                  <mat-icon matPrefix>phone</mat-icon>
+                  <input type="text" matInput formControlName="telefonoActualizar"
+                         placeholder="Ingrese su teléfono" minlength="10" maxlength="10"/>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('telefonoActualizar')?.hasError('required')">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('telefonoActualizar')?.hasError('pattern')">
+                    Solo se permiten números y deben ser exactamente 10 dígitos.
+                  </mat-error>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('telefonoActualizar')?.hasError('minlength') || actualizarUsuarioForm.get('telefonoActualizar')?.hasError('maxlength')">
+                    El teléfono debe tener exactamente 10 dígitos.
+                  </mat-error>
+
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Correo Electronio</mat-label>
+                  <mat-icon matPrefix>person</mat-icon>
+                  <input type="text" matInput formControlName="correoActualizar" placeholder="Ingrese un nuevo correo"/>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('correoActualizar')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('correoActualizar')?.errors?.['email']">
+                    Formato de correo incorrecto.
+                  </mat-error>
+                  <mat-error *ngIf="actualizarUsuarioForm.get('correoActualizar')?.errors?.['correoExistente']">
+                    Correo ya esta registrado
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <mat-dialog-actions class="mt-4">
+                <button mat-flat-button (click)="actualizarUsuario()" color="primary" class="col-md-6"
+                        [disabled]="!actualizarUsuarioForm.dirty || !actualizarUsuarioForm.valid">
+                  Actualizar
+                </button>
+                <button mat-stroked-button color="warn" class="col-md-4" (click)="cancelar()">Cancelar</button>
+              </mat-dialog-actions>
+
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<!-- END ACTUALIZAR USUARIO -->
+
+
+<!-- INICIA CAMBIAR CONTRASEÑA -->
+<mat-dialog-content *ngIf="opcionSelect === 'cambiarContrasena' ">
+  <h2><strong> Actualizar Contraseña </strong></h2>
+  <form [formGroup]="contrasenaNuevaForm">
+    <div class="col-md-12 col-lg-12">
+      <div class="row">
+        <div class="col-md-3">
+          <label><strong>
+            Nombre: </strong>{{ datoUsuario.nombre }} {{ datoUsuario.ap_paterno }} {{ datoUsuario.ap_materno }}</label>
+        </div>
+        <div class="col-md-3">
+          <label><strong> Rol: </strong>{{ datoUsuario.nombre_rol }}</label>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Contraseña</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input type="password" matInput formControlName="contrasenaModificada"
+                   placeholder="Ingrese la contraseña nueva" minlength="8"/>
+            <mat-error *ngIf="contrasenaNuevaForm.get('contrasenaModificada')?.errors?.['required']">
+              Este campo es obligatorio.
+            </mat-error>
+            <mat-error *ngIf="contrasenaNuevaForm.get('contrasenaModificada')?.hasError('minlength')">
+              La contraseña debe tener al menos 8 caracteres.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Confirmar Contraseña</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input type="password" matInput formControlName="confirmarContrasenaModificada"
+                   placeholder="Confirma la contraseña ingresada">
+            <mat-error *ngIf="contrasenaNuevaForm.get('confirmarContrasenaModificada')?.errors?.['required']">
+              Debe confirmar la contraseña del usuario
+            </mat-error>
+            <mat-error *ngIf="contrasenaNuevaForm.get('confirmarContrasenaModificada')?.errors?.['passwordMatch']">
+              Las contraseñas deben ser iguales
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-12">
+          <mat-dialog-actions class="d-flex justify-content-center align-items-center">
+            <button mat-flat-button color="primary" (click)="actualizarContrasena()"
+                    [disabled]="!contrasenaNuevaForm.valid" class="col-4">
+              Cambiar Contraseña
+            </button>
+            <button mat-stroked-button color="warn" class="col-4 ml-2" (click)="cancelar()">Cancelar</button>
+          </mat-dialog-actions>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<!-- FINAL CAMBIAR CONTRASEÑA -->
+
+<!-- INICIO CAMBIAR ESTATUS -->
+<mat-dialog-content *ngIf="opcionSelect === 'cambiarEstatus' ">
+  <h2><strong> Cambiar estatus </strong></h2>
+  <form [formGroup]="estatusNuevoForm">
+    <div class="col-md-12 col-lg-12">
+      <div class="row">
+        <div class="col-md-3">
+          <label><strong>
+            Nombre: </strong>{{ datoUsuario.nombre }} {{ datoUsuario.ap_paterno }} {{ datoUsuario.ap_materno }}</label>
+
+        </div>
+        <div class="col-md-3">
+          <label><strong> Rol: </strong>{{ datoUsuario.nombre_rol }}</label>
+        </div>
+      </div>
+      <br>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Estatus</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-select formControlName="estatusModificado" placeholder="Seleccioné el nuevo estatus del usuario">
+          <mat-option *ngFor="let estatus of usuario_estatus"
+                      [value]="estatus && estatus.clave_estatus">{{ estatus.nombre_estatus }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="estatusNuevoForm.get('estatusModificado')?.errors?.['required']">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Justificacion de estatus</mat-label>
+        <textarea type="text" matInput formControlName="justificacion_estatus" placeholder="Ingrese su justificación"
+                  rows="3"></textarea>
+        <mat-error *ngIf="estatusNuevoForm.get('justificacion_estatus')?.errors?.['required']">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-dialog-actions class="d-flex justify-content-center">
+        <button mat-flat-button (click)="actualizarEstatus()" color="primary"
+                [disabled]="!estatusNuevoForm.valid || estatusNoModificado"
+                class="col-6">
+          Cambiar estatus del usuario
+        </button>
+        <button mat-stroked-button color="warn" class="m-l-8" (click)="cancelar()">Cancelar</button>
+      </mat-dialog-actions>
+    </div>
+  </form>
+</mat-dialog-content>
+
+
+

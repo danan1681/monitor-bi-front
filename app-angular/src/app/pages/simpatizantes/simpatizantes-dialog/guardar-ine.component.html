@@ -1,0 +1,42 @@
+<mat-dialog-content>
+  @if (action === "guardarIne") {
+    <h2 class="mb-4"><strong> Guardar INE </strong></h2>
+  } @else {
+    <h2 class="mb-4"><strong> Actualizar INE</strong></h2>
+  }
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <div class="row">
+        <!-- Columna de Campos del Usuario -->
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-lg-12" style="text-align: center">
+              <h2>Subir archivo</h2>
+              <input type="file" accept="image/*" (change)="onImageChange($event)" class="mt-3">
+              <hr>
+              <div *ngIf="imagenRecortadaUrl" class="mt-3 text-center">
+                <img [src]="imagenRecortadaUrl" alt="INE cargada" width="300">
+              </div>
+            </div>
+
+            <!-- Acciones del Formulario -->
+            <mat-dialog-actions class="mt-4">
+              @if (action === "guardarIne") {
+                <button mat-flat-button color="primary" [disabled]="!imagenRecortadaFile || isSubmitting"
+                        (click)="guardarImagenIneSimpatizante()">
+                  Guardar
+                </button>
+              } @else {
+                <button mat-flat-button color="primary" [disabled]="!imagenRecortadaFile || isSubmitting"
+                        (click)="guardarImagenIneSimpatizante()">
+                  Actualizar
+                </button>
+              }
+              <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+            </mat-dialog-actions>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,98 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Buscar evento"
+            (keyup)="applyFilter($any($event.target).value)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button color="primary"
+                (click)="openNuevoEvento('crearEvento', null)">
+          Nuevo evento
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Nombre</th>
+          <td mat-cell *matCellDef="let evento" class="f-s-14">{{ evento.nombre }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Descripción</th>
+          <td mat-cell *matCellDef="let evento" class="f-s-14">{{ evento.descripcion }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Tipo de Evento</th>
+          <td mat-cell *matCellDef="let evento" class="f-s-14"> {{
+              evento.tipo === 'Estatal'
+                ? 'Estatal - ' + obtenerNombreEstado(evento.clave_estado)
+                : 'Federal'
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Fecha</th>
+          <td mat-cell *matCellDef="let evento" class="f-s-14"> {{ evento.fecha | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let evento" class="action-link">
+            <a
+              [ngClass]="{'disabled-link': evento.clave_estatus === 2}"
+              class="m-r-10 cursor-pointer"
+              [matTooltip]="evento.nombre_estatus === 'Deshabilitado' ? 'No se puede actualizar si el evento está deshabilitado' : 'Actualizar evento'"
+              (click)="evento.clave_estatus !== 2 && openNuevoEvento('editarEvento', evento)">
+              <i-tabler name="edit" class="icon-18"></i-tabler>
+            </a>
+            <a
+              class="m-r-10 cursor-pointer"
+              matTooltip="Ver promotores del evento"
+              (click)="verPromotores(evento._id)">
+              <i-tabler name="users" class="icon-18"></i-tabler>
+            </a>
+            <a
+              class="m-r-10 cursor-pointer"
+              matTooltip="Ver detalles del evento"
+              (click)="verDetalles(evento._id)">
+              <i-tabler name="eye" class="icon-18"></i-tabler>
+            </a>
+            <a
+              class="m-r-10 cursor-pointer"
+              [matTooltip]="evento.nombre_estatus === 'Deshabilitado' ? 'Habilitar' : 'Deshabilitar'"
+              (click)="openNuevoEvento('cambiarEstatus', evento)">
+              <i-tabler name="refresh" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{'disabled-row': row.clave_estatus === 2}"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Recortar Imagen</h2>
+<mat-dialog-content class="mat-typography">
+  <image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="false"
+    [transform]="{ rotate: rotation }"
+    format="png"
+    (imageCropped)="imageCropped($event)">
+  </image-cropper>
+  <div class="mt-3 d-flex justify-content-center gap-3">
+    <button mat-mini-fab color="primary" (click)="rotateLeft()" matTooltip="Rotar a la izquierda">
+      <mat-icon>rotate_left</mat-icon>
+    </button>
+    <button mat-mini-fab color="primary" (click)="rotateRight()" matTooltip="Rotar a la derecha">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Aceptar</button>
+</mat-dialog-actions>
+

@@ -1,0 +1,31 @@
+.indicator-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px; /* Ajusta según el espacio deseado */
+}
+
+.item-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.bg-error {
+  background-color: #f44336; /* Color de error */
+}
+
+.bg-success {
+  background-color: #4caf50; /* Color de éxito */
+}
+
+.mat-icon {
+  font-size: 16px; /* Ajusta el tamaño del ícono */
+  line-height: 24px; /* Centra verticalmente el ícono */
+}

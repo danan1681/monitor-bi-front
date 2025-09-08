@@ -1,0 +1,91 @@
+<app-evento-titulo [idEvento]="idEvento"></app-evento-titulo>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Buscar candidato"
+            (keyup)="applyFilter($any($event.target).value)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button color="primary"
+                (click)="openNuevoCandidato('crearCandidato', null)">
+          Nuevo Candidato
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Nombre</th>
+          <td mat-cell *matCellDef="let candidato" class="f-s-14">{{ candidato.nombre + ' ' + candidato.ap_paterno + ' ' + candidato.ap_materno }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="candidatura">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Candidatura</th>
+          <td mat-cell *matCellDef="let candidato" class="f-s-14">{{ obtenerNombreCandidatura(candidato.candidatura) }}</td>
+        </ng-container>
+
+<!--        <ng-container matColumnDef="tipo_candidatura">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Tipo de Candidatura</th>-->
+<!--          <td mat-cell *matCellDef="let candidato" class="f-s-14"> {{ candidato.tipo_candidatura}}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="secciones">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Secciones</th>-->
+<!--          <td mat-cell *matCellDef="let candidato" class="f-s-14"> {{ candidato.secciones }} </td>-->
+<!--        </ng-container>-->
+
+        <ng-container matColumnDef="celular">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Celular</th>
+          <td mat-cell *matCellDef="let candidato" class="f-s-14"> {{ candidato.celular }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let candidato" class="action-link">
+            <a
+              [ngClass]="{'disabled-link': candidato.clave_estatus === 2}"
+              class="m-r-10 cursor-pointer "
+              [matTooltip]="candidato.nombre_estatus === 'Deshabilitado' ? 'No se puede actualizar si el candidato está deshabilitado' : 'Actualizar candidato'"
+              (click)="openNuevoCandidato('editarCandidato', candidato)"
+            >
+              <i-tabler name="edit" class="icon-18"></i-tabler>
+            </a>
+
+            <!--              <a-->
+            <!--                class="m-r-10 cursor-pointer"-->
+            <!--                [matTooltip]="'Eliminar candidato'"-->
+            <!--                (click)="eliminarSimpatizante(candidato._id)"-->
+            <!--                >-->
+            <!--                <i-tabler name="trash" class="icon-18"></i-tabler>-->
+            <!--              </a>-->
+
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'disabled-row': row.clave_estatus === 2}"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

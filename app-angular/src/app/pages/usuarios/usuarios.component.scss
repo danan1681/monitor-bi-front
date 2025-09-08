@@ -1,0 +1,20 @@
+.invalid-feedback {
+  color: red;
+  font-size: smaller;
+}
+
+.disabled-row td {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.disabled-row td.action-link {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+.disabled-link {
+  opacity: 0.5;
+  pointer-events: none;
+}
+

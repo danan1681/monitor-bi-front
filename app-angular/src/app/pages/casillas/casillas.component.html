@@ -1,0 +1,125 @@
+<app-evento-titulo [idEvento]="idEvento"></app-evento-titulo>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Buscar casilla"
+            (keyup)="applyFilter($any($event.target).value)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+<!--        <input type="file" #inputArchivo hidden (change)="subirArchivoExcel($event)" accept=".xlsx, .xls" />-->
+
+<!--        <button mat-flat-button color="primary"-->
+<!--                (click)="inputArchivo.click()">-->
+<!--          Importar Casillas de Excel-->
+<!--        </button>-->
+<!--        &nbsp;&nbsp;-->
+        <button mat-flat-button color="primary"
+                (click)="verMapa()">
+          Ver mapa de casillas
+        </button>
+        &nbsp;&nbsp;
+        <button mat-flat-button color="primary"
+                (click)="nuevaCasilla()">
+          Nueva Casilla
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+
+        <ng-container matColumnDef="distrito_federal">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Distrito Federal</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.distritoFederal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="distrito_local">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Distrito Local</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.distritoLocal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="municipio">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Municipio</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.municipio }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="seccion">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Seccion</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.seccion }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipo_casilla">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Tipo</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.tipoCasilla }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_votos">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Total de votos</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.totalVotos }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="lista_nominal">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Lista Nominal</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.listaNominal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="meta">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Meta</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.meta }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="ejercidos">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Ejercidos</th>
+          <td mat-cell *matCellDef="let casilla" class="f-s-14">{{ casilla.ejercidos ? casilla.ejercidos : 'Sin registro' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let casilla" class="action-link">
+            <a
+              class="m-r-10 cursor-pointer "
+              [matTooltip]="'Actualizar casilla'"
+              (click)="openDialogEditar(casilla)"
+            >
+              <i-tabler name="edit" class="icon-18"></i-tabler>
+            </a>
+            <a
+              class="m-r-10 cursor-pointer"
+              [matTooltip]="casilla?.ejercidos ? 'Ya hay votos registrados' : 'No hay votos registrados'"
+              (click)="openDialogEjercidos(casilla?.ejercidos ? 'actualizarEjercidos' : 'guardarEjercidos', casilla)"
+            >
+              <i-tabler
+                [name]="casilla?.ejercidos ? 'award' : 'award-off'"
+                class="icon-18"
+                [style.color]="casilla?.ejercidos ? 'green' : 'red'"
+              ></i-tabler>
+            </a>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+

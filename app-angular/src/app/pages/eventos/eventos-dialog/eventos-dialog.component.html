@@ -1,0 +1,156 @@
+<mat-dialog-content *ngIf="action != 'cambiarEstatus'">
+  @if (action === "crearEvento") {
+    <h2 class="mb-4"><strong> Crear Evento </strong></h2>
+  } @else {
+    <h2 class="mb-4"><strong> Actualizar Evento </strong></h2>
+  }
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="crearFormularioEvento">
+        <div class="row">
+          <!-- Columna de Campos del Usuario -->
+          <div class="col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Nombre del evento</mat-label>
+                  <mat-icon matPrefix>event</mat-icon>
+                  <input matInput formControlName="nombre" placeholder="Ingrese el nombre del evento">
+                  <mat-error
+                    *ngIf="crearFormularioEvento.get('nombre')?.invalid && crearFormularioEvento.get('nombre')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Descripción -->
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Descripción</mat-label>
+                  <mat-icon matPrefix>description</mat-icon>
+                  <input matInput formControlName="descripcion" placeholder="Ingrese la descripción del evento">
+                  <mat-error
+                    *ngIf="crearFormularioEvento.get('descripcion')?.invalid && crearFormularioEvento.get('descripcion')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Tipo de evento -->
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Tipo de evento</mat-label>
+                  <mat-icon matPrefix>category</mat-icon>
+                  <mat-select formControlName="tipo"
+                              (selectionChange)="crearFormularioEvento.get('tipo')?.value === 'Estatal' && obtenerEstados()">
+                    <mat-option value="Federal">Federal</mat-option>
+                    <mat-option value="Estatal">Estatal</mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="crearFormularioEvento.get('tipo')?.invalid && crearFormularioEvento.get('tipo')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Clave Estado (solo si tipo === 'Estatal') -->
+              <div class="col-lg-6" *ngIf="crearFormularioEvento.get('tipo')?.value === 'Estatal'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Estado</mat-label>
+                  <mat-icon matPrefix>map</mat-icon>
+                  <mat-select formControlName="clave_estado">
+                    <mat-option *ngFor="let estado of estados()" [value]="estado.clave_estado">
+                      {{ estado.nombre_estado }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="crearFormularioEvento.get('clave_estado')?.invalid && crearFormularioEvento.get('clave_estado')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Fecha del evento -->
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Fecha del evento</mat-label>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  <input type="date" matInput formControlName="fecha" placeholder="Seleccione la fecha del evento">
+                  <mat-error
+                    *ngIf="crearFormularioEvento.get('fecha')?.invalid && crearFormularioEvento.get('fecha')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Acciones del Formulario -->
+              <mat-dialog-actions class="mt-4">
+                @if (action === "crearEvento") {
+                  <button mat-flat-button color="primary" (click)="crearEvento()"
+                          [disabled]="!crearFormularioEvento.valid || isSubmitting ">
+                    Crear Nuevo
+                  </button>
+                } @else {
+                  <button mat-flat-button color="primary" (click)="actualizarEvento()"
+                          [disabled]="!crearFormularioEvento.valid || isSubmitting">
+                    Actualizar
+                  </button>
+                }
+                <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+              </mat-dialog-actions>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+
+
+<mat-dialog-content *ngIf="action === 'cambiarEstatus'">
+  <h2 class="mb-4"><strong> Cambiar estatus </strong></h2>
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="estatusFormularioEvento">
+        <div class="row">
+          <div class="col-md-8">
+            <label><strong>
+              Nombre Evento: </strong>{{ evento.nombre }}</label>
+          </div>
+        </div>
+        <br>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Estatus</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-select formControlName="clave_estatus" placeholder="Seleccioné el nuevo estatus del evento">
+            <mat-option *ngFor="let estatus of evento_estatus"
+                        [value]="estatus && estatus.clave_estatus">{{ estatus.nombre_estatus }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="estatusFormularioEvento.get('clave_estatus')?.errors?.['required']">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Justificacion de estatus</mat-label>
+          <textarea type="text" matInput formControlName="justificacion_estatus" placeholder="Ingrese su justificación"
+                    rows="3"></textarea>
+          <mat-error *ngIf="estatusFormularioEvento.get('justificacion_estatus')?.errors?.['required']">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <mat-dialog-actions class="d-flex justify-content-center">
+          <button mat-flat-button (click)="actualizarEstatus()" color="primary"
+                  [disabled]="!estatusFormularioEvento.valid || estatusNoModificado"
+                  class="col-6">
+            Cambiar estatus del evento
+          </button>
+          <button mat-stroked-button color="warn" class="m-l-8" (click)="cancelar()">Cancelar</button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+

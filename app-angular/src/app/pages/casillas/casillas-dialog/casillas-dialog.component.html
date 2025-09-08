@@ -1,0 +1,156 @@
+<h1 mat-dialog-title>Editar Casilla</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="formulario_actualizar_casilla">
+
+    <h3><strong>Información General</strong></h3>
+    <div class="row">
+<!--      <div class="col-lg-6">-->
+<!--        <mat-form-field appearance="outline" class="w-100">-->
+<!--          <mat-label>Distrito Federal</mat-label>-->
+<!--          <mat-icon matPrefix>public</mat-icon>-->
+<!--          <input matInput formControlName="distritoFederal" placeholder="Ej. 05">-->
+<!--          <mat-error *ngIf="formulario_actualizar_casilla.get('distritoFederal')?.invalid && formulario_actualizar_casilla.get('distritoFederal')?.touched">-->
+<!--            Distrito Federal es obligatorio.-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+<!--      <div class="col-lg-6">-->
+<!--        <mat-form-field appearance="outline" class="w-100">-->
+<!--          <mat-label>Distrito Local</mat-label>-->
+<!--          <mat-icon matPrefix>map</mat-icon>-->
+<!--          <input matInput formControlName="distritoLocal" placeholder="Ej. 12">-->
+<!--          <mat-error *ngIf="formulario_actualizar_casilla.get('distritoLocal')?.invalid && formulario_actualizar_casilla.get('distritoLocal')?.touched">-->
+<!--            Distrito Local es obligatorio.-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--      <div class="col-lg-4">-->
+<!--        <mat-form-field appearance="outline" class="w-100">-->
+<!--          <mat-label>Municipio</mat-label>-->
+<!--          <mat-icon matPrefix>location_city</mat-icon>-->
+<!--          <input matInput formControlName="municipio" placeholder="Ej. Tlaxcala">-->
+<!--          <mat-error *ngIf="formulario_actualizar_casilla.get('municipio')?.invalid && formulario_actualizar_casilla.get('municipio')?.touched">-->
+<!--            Municipio es obligatorio.-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Sección</mat-label>
+          <mat-icon matPrefix>pin_drop</mat-icon>
+          <input matInput type="number" formControlName="seccion" placeholder="Ej. 1450">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('seccion')?.hasError('required') && formulario_actualizar_casilla.get('seccion')?.touched">
+            Sección es obligatoria.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('seccion')?.hasError('pattern') && formulario_actualizar_casilla.get('seccion')?.touched">
+            Sección debe ser numérica.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('seccion')?.hasError('seccionNoExiste')">
+            Esta sección no existe en el sistema
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo de Casilla</mat-label>
+          <mat-icon matPrefix>how_to_vote</mat-icon>
+          <mat-select formControlName="tipoCasilla">
+            <mat-option *ngFor="let tipo of tiposCasilla" [value]="tipo">
+              {{tipo}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('tipoCasilla')?.invalid && formulario_actualizar_casilla.get('tipoCasilla')?.touched">
+            Selecciona el tipo de casilla.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <h3><strong>Datos Numéricos</strong></h3>
+    <div class="row">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Lista Nominal</mat-label>
+          <mat-icon matPrefix>list_alt</mat-icon>
+          <input matInput type="number" formControlName="listaNominal" placeholder="Total en lista nominal">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('listaNominal')?.invalid && formulario_actualizar_casilla.get('listaNominal')?.touched">
+            La lista nominal es obligatoria y debe ser mayor a 0.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Meta de Votos</mat-label>
+          <mat-icon matPrefix>flag</mat-icon>
+          <input matInput type="number" formControlName="meta" placeholder="Meta de votos esperada">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('meta')?.invalid && formulario_actualizar_casilla.get('meta')?.touched">
+            La meta es obligatoria y debe ser mayor a 0.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Total Votos</mat-label> <mat-icon matPrefix>ballot</mat-icon>
+          <input matInput type="number" formControlName="totalVotos" placeholder="Votos registrados">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('totalVotos')?.invalid && formulario_actualizar_casilla.get('totalVotos')?.touched">
+            Total de votos obligatorio y debe ser 0 o mayor.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <h3 class="mt-3"><strong>Ubicación (Selecciona/Modifica en el mapa o campos)</strong></h3>
+    <div id="mapaDialogoCasilla" style="height: 350px; width: 100%; border: 1px solid #ccc; margin-bottom: 15px; border-radius: 4px;">
+    </div>
+
+    <div formGroupName="direccion" class="row">
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Latitud</mat-label>
+          <mat-icon matPrefix>gps_fixed</mat-icon>
+          <input matInput type="number" formControlName="latitud" placeholder="Ej. 19.3190">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.latitud')?.hasError('required') && formulario_actualizar_casilla.touched">
+            Latitud obligatoria.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.latitud')?.hasError('min') || formulario_actualizar_casilla.get('direccion.latitud')?.hasError('max')">
+            Latitud debe estar entre -90 y 90.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.latitud')?.hasError('pattern') && formulario_actualizar_casilla.touched">
+            Formato de latitud inválido.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Longitud</mat-label>
+          <mat-icon matPrefix>gps_fixed</mat-icon>
+          <input matInput type="number" formControlName="longitud" placeholder="Ej. -98.2380">
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.longitud')?.hasError('required') && formulario_actualizar_casilla.touched">
+            Longitud obligatoria.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.longitud')?.hasError('min') || formulario_actualizar_casilla.get('direccion.longitud')?.hasError('max')">
+            Longitud debe estar entre -180 y 180.
+          </mat-error>
+          <mat-error *ngIf="formulario_actualizar_casilla.get('direccion.longitud')?.hasError('pattern') && formulario_actualizar_casilla.touched">
+            Formato de longitud inválido.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-stroked-button color="warn" (click)="cancelar()">Cancelar</button>
+  &nbsp;&nbsp;
+  <button mat-flat-button
+          color="primary"
+          (click)="actualizarCasilla()"
+          [disabled]="formulario_actualizar_casilla.invalid || !formulario_actualizar_casilla.dirty || actualizando">
+    {{ actualizando ? 'Guardando...' : 'Guardar Cambios' }}
+  </button>
+</div>

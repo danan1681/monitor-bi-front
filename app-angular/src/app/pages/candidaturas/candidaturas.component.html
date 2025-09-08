@@ -1,0 +1,99 @@
+<app-evento-titulo [idEvento]="idEvento"></app-evento-titulo>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Buscar candidatura"
+            (keyup)="applyFilter($any($event.target).value)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button color="primary"
+                (click)="openNuevoCandidatura('crearCandidatura', null)">
+          Nuevo Candidatura
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Nombre</th>
+          <td mat-cell *matCellDef="let candidatura" class="f-s-14">{{ candidatura.nombre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Tipo</th>
+          <td mat-cell *matCellDef="let candidatura" class="f-s-14">
+            {{
+              candidatura.tipo === 'Federal' ? 'Distrito Federal' :
+                candidatura.tipo === 'Local' ? 'Distrito Local' :
+                  candidatura.tipo === 'Municipio' ? 'Municipio' :
+                    candidatura.tipo === 'Estado' ? 'Estado' : '—'
+            }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="clave">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Clave</th>
+          <td mat-cell *matCellDef="let candidatura" class="f-s-14">
+            {{
+              candidatura.tipo === 'Estado' ? candidatura.estado_clave :
+                candidatura.tipo === 'Federal' ? candidatura.distrito_federal_clave :
+                  candidatura.tipo === 'Local' ? candidatura.distrito_local_clave :
+                    candidatura.tipo === 'Municipio' ? candidatura.municipio_clave + ' - ' + obtenerNombreMunicipio(candidatura.municipio_clave) :
+                      '—'
+            }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="estatus">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Estatus</th>
+          <td mat-cell *matCellDef="let candidatura" class="f-s-14">{{ candidatura.estatus === 1 ? 'Habilitado' : 'Deshabilitado' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let candidatura" class="action-link">
+            <a
+              [ngClass]="{'disabled-link': candidatura.estatus === 2}"
+              class="m-r-10 cursor-pointer "
+              [matTooltip]="candidatura.nombre_estatus === 'Deshabilitado' ? 'No se puede actualizar si el candidatura está deshabilitado' : 'Actualizar candidatura'"
+              (click)="openNuevoCandidatura('editarCandidatura', candidatura)"
+            >
+              <i-tabler name="edit" class="icon-18"></i-tabler>
+            </a>
+
+            <!--              <a-->
+            <!--                class="m-r-10 cursor-pointer"-->
+            <!--                [matTooltip]="'Eliminar candidatura'"-->
+            <!--                (click)="eliminarSimpatizante(candidatura._id)"-->
+            <!--                >-->
+            <!--                <i-tabler name="trash" class="icon-18"></i-tabler>-->
+            <!--              </a>-->
+
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'disabled-row': row.estatus === 2}"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+

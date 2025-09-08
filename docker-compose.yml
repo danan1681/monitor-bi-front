@@ -1,0 +1,14 @@
+name: inteligencia-territorial-front
+
+services: 
+  nginx-inteligencia:
+    container_name: nginx-inteligencia-territorial
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    restart: always
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./app-angular:/app
+      - /app/node_modules

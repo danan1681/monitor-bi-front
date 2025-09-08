@@ -1,0 +1,23 @@
+<mat-card class="cardWithShadow">
+
+  <div class="card-overlay h-100 d-flex align-items-end justify-content-end">
+    <mat-chip class="f-s-12 f-w-600 m-y-16 m-r-16 bg-white"
+    >  <button mat-stroked-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon> Regresar
+    </button></mat-chip
+    >
+  </div>
+  <mat-card-content class="p-24 b-b-1">
+
+
+    <mat-card-title class="m-t-16 m-b-24 blog-title"
+    > {{ evento?.nombre }}
+    </mat-card-title>
+    <p class="mat-body-1 m-t-16">
+      {{ descripcionRecortada }}
+    </p>
+      <div class="user-category">
+        <mat-chip class="f-s-12 m-y-16 f-w-600"> {{ evento?.fecha | date: 'dd/MM/yyyy' }}</mat-chip>
+      </div>
+  </mat-card-content>
+</mat-card>

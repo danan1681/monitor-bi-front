@@ -1,0 +1,153 @@
+<mat-dialog-content>
+  @if(action === "crearCandidato"){
+    <h2 class="mb-4"><strong> Crear Candidato </strong></h2>
+  }
+  @else{
+    <h2 class="mb-4"><strong> Actualizar Candidato </strong></h2>
+  }
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="crearFormularioCandidato">
+        <div class="row">
+          <!-- Columna de Campos del Usuario -->
+          <div class="col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Nombre</mat-label>
+                  <mat-icon matPrefix>person_outline</mat-icon>
+                  <input type="text" matInput formControlName="nombre" placeholder="Ingrese nombre del candidato"/>
+                  <mat-error
+                    *ngIf="crearFormularioCandidato.get('nombre')?.invalid && crearFormularioCandidato.get('nombre')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Paterno</mat-label>
+                  <mat-icon matPrefix>person_outline</mat-icon>
+                  <input type="text" matInput formControlName="ap_paterno" placeholder="Ingrese apellido paterno del candidato"/>
+                  <mat-error
+                    *ngIf="crearFormularioCandidato.get('ap_paterno')?.invalid && crearFormularioCandidato.get('ap_paterno')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Apellido Materno</mat-label>
+                  <mat-icon matPrefix>person_outline</mat-icon>
+                  <input type="text" matInput formControlName="ap_materno" placeholder="Ingrese apellido materno del candidato"/>
+                  <mat-error
+                    *ngIf="crearFormularioCandidato.get('ap_materno')?.invalid && crearFormularioCandidato.get('ap_materno')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Candidatura</mat-label>
+                  <mat-icon matPrefix>gavel</mat-icon>
+                  <mat-select formControlName="candidatura" placeholder="Seleccione la candidatura">
+                    <mat-option *ngFor="let cand of listaCandidaturas" [value]="cand._id">
+                      {{ cand.nombre }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="crearFormularioCandidato.get('candidatura')?.invalid && crearFormularioCandidato.get('candidatura')?.touched">
+                    Este campo es obligatorio.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+<!--              <div class="col-lg-6">-->
+<!--                <mat-form-field appearance="outline" class="w-100">-->
+<!--                  <mat-label>Tipo de Candidatura</mat-label>-->
+<!--                  <mat-icon matPrefix>campaign</mat-icon>-->
+<!--                  <input type="text" matInput formControlName="tipo_candidatura" placeholder="Ingrese el tipo de candidatura"/>-->
+<!--                  <mat-error-->
+<!--                    *ngIf="crearFormularioCandidato.get('tipo_candidatura')?.invalid && crearFormularioCandidato.get('tipo_candidatura')?.touched">-->
+<!--                    Este campo es obligatorio.-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+<!--              <div [ngClass]="action === 'crearCandidato' ? 'col-lg-12' : 'col-lg-6'">-->
+<!--                <mat-form-field appearance="outline" class="w-100">-->
+<!--                  <mat-label>Secciones</mat-label>-->
+<!--                  <mat-icon matPrefix>playlist_add_check</mat-icon>-->
+<!--                  <mat-select formControlName="secciones" multiple placeholder="Seleccione una o más secciones">-->
+<!--                    <mat-option *ngFor="let casilla of listaCasillas" [value]="casilla">-->
+<!--                      {{ casilla }} </mat-option>-->
+<!--                  </mat-select>-->
+<!--                  <mat-error-->
+<!--                    *ngIf="crearFormularioCandidato.get('secciones')?.invalid && crearFormularioCandidato.get('secciones')?.touched">-->
+<!--                    Debe seleccionar al menos una casilla.-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+
+              <div class='col-lg-6'>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Celular</mat-label>
+                  <mat-icon matPrefix>local_phone</mat-icon>
+                  <input type="text" matInput formControlName="celular" placeholder="Ingrese el celular"/>
+                  <mat-error
+                    *ngIf="crearFormularioCandidato.get('celular')?.invalid && crearFormularioCandidato.get('celular')?.hasError('pattern')">
+                    Este campo es obligatorio. Solo números y debe tener 10 dígitos.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+<!--              @if(action === "crearCandidato"){-->
+<!--                <div class="col-lg-4">-->
+<!--                  <mat-form-field appearance="outline" class="w-100">-->
+<!--                    <mat-label>Contraseña</mat-label>-->
+<!--                    <mat-icon matPrefix>lock</mat-icon>-->
+<!--                    <input type="password" matInput formControlName="contrasena"-->
+<!--                           placeholder="Ingrese una contraseña segura" minlength="8"/>-->
+<!--                    <mat-error *ngIf="crearFormularioCandidato.get('contrasena')?.errors?.['required']">-->
+<!--                      Este campo es obligatorio.-->
+<!--                    </mat-error>-->
+<!--                    <mat-error *ngIf="crearFormularioCandidato.get('contrasena')?.hasError('minlength')">-->
+<!--                      La contraseña debe tener al menos 8 caracteres.-->
+<!--                    </mat-error>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
+<!--                <div class="col-lg-4">-->
+<!--                  <mat-form-field appearance="outline" class="w-100">-->
+<!--                    <mat-label>Confirmar Contraseña</mat-label>-->
+<!--                    <mat-icon matPrefix>lock</mat-icon>-->
+<!--                    <input type="password" matInput formControlName="contrasena_verificar"-->
+<!--                           placeholder="Confirme su contraseña"/>-->
+<!--                    <mat-error *ngIf="crearFormularioCandidato.get('contrasena_verificar')?.errors?.['required']">-->
+<!--                      Este campo es obligatorio.-->
+<!--                    </mat-error>-->
+<!--                    <mat-error *ngIf="crearFormularioCandidato.get('contrasena_verificar')?.errors?.['passwordMatch']">-->
+<!--                      Las contraseñas deben coincidir.-->
+<!--                    </mat-error>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
+<!--              }-->
+              <!-- Acciones del Formulario -->
+              <mat-dialog-actions class="mt-4">
+                @if(action === "crearCandidato"){
+                  <button mat-flat-button color="primary"  (click)="crearCandidato()" [disabled]="!crearFormularioCandidato.valid">
+                    Crear Nuevo
+                  </button>
+                }
+                @else{
+                  <button mat-flat-button color="primary" (click)="actualizarCandidato()" [disabled]="!crearFormularioCandidato.valid">
+                    Actualizar
+                  </button>
+                }
+                <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+              </mat-dialog-actions>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>

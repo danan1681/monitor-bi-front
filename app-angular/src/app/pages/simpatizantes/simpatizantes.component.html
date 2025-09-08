@@ -1,0 +1,507 @@
+<app-evento-titulo *ngIf="id_evento" [idEvento]="id_evento"></app-evento-titulo>
+
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-center gap-3"
+    >
+      <!-- Filtros de evento y promotor (lado izquierdo) -->
+      <div class="d-flex flex-wrap align-items-center gap-3 col-6">
+        <!-- Selector de evento -->
+        <div class="flex-grow-1" *ngIf="claveRol === 27 || claveRol === 35">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Selecciona un evento</mat-label>
+            <mat-select
+              [(ngModel)]="eventoSeleccionado"
+              (selectionChange)="obtenerTablaUsuarios()"
+            >
+              <mat-option *ngFor="let evento of eventos()" [value]="evento._id">
+                {{ evento.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Selector de promotor y enlace -->
+        <div
+          class="d-flex gap-3 w-100"
+          *ngIf="promotores && promotores.length > 0 && eventoSeleccionado"
+        >
+          <!-- Promotor -->
+          <div class="flex-grow-1">
+            <!--            <mat-form-field appearance="outline" class="w-100">-->
+            <!--              <mat-label>Selecciona un promotor</mat-label>-->
+            <!--              <mat-select-->
+            <!--                [(ngModel)]="promotorSeleccionado"-->
+            <!--                (selectionChange)="filtrarSimpatizantesPorPromotor()"-->
+            <!--                [disabled]="promotorSeleccionado !== null"-->
+            <!--              >-->
+            <!--                <ng-container *ngFor="let promotor of promotores">-->
+            <!--                  <mat-option-->
+            <!--                    [value]="promotor"-->
+            <!--                    *ngIf="promotor.clave_rol == 48"-->
+            <!--                  >-->
+            <!--                    {{ promotor.nombre_completo }}-->
+            <!--                  </mat-option>-->
+            <!--                </ng-container>-->
+            <!--              </mat-select>-->
+            <!--            </mat-form-field>-->
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Selecciona un promotor</mat-label>
+              <mat-select
+                [(ngModel)]="promotorSeleccionado"
+                (ngModelChange)="onPromotorChange($event)"
+                [disabled]="promotorSeleccionado !== null"
+              >
+                <ng-container *ngFor="let promotor of promotores">
+                  <mat-option
+                    [value]="promotor"
+                    *ngIf="promotor.clave_rol == 48"
+                  >
+                    {{ promotor.nombre_completo }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Enlace promotor -->
+          <!--          <div class="flex-grow-1" *ngIf="promotorSeleccionado">-->
+          <!--            <mat-form-field appearance="outline" class="w-100">-->
+          <!--              <mat-label>Selecciona un enlace promotor</mat-label>-->
+          <!--              <mat-select-->
+          <!--                [(ngModel)]="promotorEnlaceSeleccionado"-->
+          <!--                (selectionChange)="filtrarSimpatizantesPorEnlace()"-->
+          <!--              >-->
+          <!--                <ng-container *ngFor="let promotor of enlacePromotores">-->
+          <!--                  <mat-option-->
+          <!--                    [value]="promotor"-->
+          <!--                    *ngIf="promotor.clave_rol == 49"-->
+          <!--                  >-->
+          <!--                    {{ promotor.nombre_completo }}-->
+          <!--                  </mat-option>-->
+          <!--                </ng-container>-->
+          <!--              </mat-select>-->
+          <!--            </mat-form-field>-->
+          <!--          </div>-->
+
+          <div
+            class="flex-grow-1"
+            *ngIf="promotorSeleccionado && enlacesDelPromotor().length > 0"
+          >
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Selecciona un enlace promotor</mat-label>
+              <mat-select
+                [(ngModel)]="promotorEnlaceSeleccionado"
+                (selectionChange)="filtrarSimpatizantesPorEnlace()"
+              >
+                <mat-option
+                  *ngFor="let promotor of enlacesDelPromotor()"
+                  [value]="promotor"
+                >
+                  {{ promotor.nombre_completo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Botón limpiar filtros -->
+        <button
+          mat-flat-button
+          color="warn"
+          class="w-100"
+          *ngIf="promotorSeleccionado"
+          (click)="limpiarFiltros()"
+        >
+          Limpiar filtros
+        </button>
+      </div>
+
+      <!-- Barra de acciones (lado derecho) -->
+      <div
+        class="d-flex flex-column align-items-start gap-2"
+        style="min-width: 40%"
+      >
+        <!-- Buscador -->
+        <mat-form-field appearance="outline" class="hide-hint w-100">
+          <input
+            matInput
+            placeholder="Buscar simpatizante"
+            [(ngModel)]="filtroBusqueda"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+
+        <!-- Botón nuevo registro -->
+        <div class="d-flex flex-wrap gap-3 w-100">
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="registrarSimpatizanteSinIne()"
+            *ngIf="claveRol === 48 || claveRol === 49"
+          >
+            Nuevo registro
+          </button>
+
+<!--          &lt;!&ndash; Botón nuevo registro con INE &ndash;&gt;-->
+<!--          <button-->
+<!--            mat-flat-button-->
+<!--            color="primary"-->
+<!--            (click)="registrarSimpatizanteConIne()"-->
+<!--            *ngIf="claveRol !== 49 && claveRol !== 35"-->
+<!--          >-->
+<!--            Nuevo registro con INE-->
+<!--          </button>-->
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row gx-3 gy-4">
+      <div
+        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
+        *ngFor="let simpatizante of simpatizantesFiltradosPaginados"
+      >
+        <mat-card class="simpatizante-card h-100 position-relative">
+          <!-- Marcador de voto arriba a la derecha -->
+          <a
+            *ngIf="claveRol != 35"
+            class="ejercio-marker-inside"
+            [ngClass]="
+              simpatizante.ejercio === '1' ? 'voto-ok' : 'voto-pendiente'
+            "
+            (click)="confirmarActualizarEjercio(simpatizante)"
+            matTooltip="{{
+              simpatizante.ejercio === '1' ? 'Votó' : 'No ha votado'
+            }}"
+          >
+            <i-tabler
+              [name]="simpatizante.ejercio === '1' ? 'check' : 'x'"
+            ></i-tabler>
+          </a>
+
+          <mat-card-content>
+            <h4 class="mb-1">
+              {{ simpatizante.nombre }} {{ simpatizante.ap_paterno }}
+              {{ simpatizante.ap_materno }}
+            </h4>
+            <p class="mb-2">
+              <strong>SECCION:</strong> {{ simpatizante.seccion }}
+            </p>
+            <p class="mb-2">
+              <strong>TELEFONO:</strong> {{ simpatizante.telefono_celular }}
+            </p>
+            <p class="mb-2"><strong>CURP:</strong> {{ simpatizante.curp }}</p>
+
+            <div
+              [ngStyle]="{
+                'background-color': simpatizante.telefono_verificado
+                  ? '#deffe5'
+                  : '#ffdee1',
+                color: simpatizante.telefono_verificado ? '#155724' : '#721c24',
+                padding: '10px',
+                'border-radius': '8px',
+                display: 'flex',
+                'align-items': 'center',
+                gap: '10px',
+                'margin-top': '10px'
+              }"
+            >
+              <span
+                [ngStyle]="{
+                  width: '10px',
+                  height: '10px',
+                  'border-radius': '50%',
+                  'background-color': simpatizante.telefono_verificado
+                    ? 'green'
+                    : 'red',
+                  display: 'inline-block'
+                }"
+              >
+              </span>
+              <p style="margin: 0">
+                {{
+                  simpatizante.telefono_verificado
+                    ? "VERIFICADO"
+                    : "SIN VERIFICAR"
+                }}
+              </p>
+            </div>
+
+            <!-- <ng-container matColumnDef="telefono_verificado">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                Telefono Verificado
+              </th>
+              <td mat-cell *matCellDef="let simpatizante" class="f-s-14">
+                <div
+                  *ngIf="simpatizante.telefono_verificado; else noVerificado"
+                  style="
+                    background-color: #deffe5;
+                    padding: 10px;
+                    border-radius: 20px;
+                    display: flex;
+                    width: 75%;
+                    align-items: center;
+                  "
+                >
+                  <span
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      background-color: green;
+                      border-radius: 50%;
+                      display: inline-block;
+                      margin-right: 8px;
+                    "
+                  ></span>
+                  <span style="color: #032a0c">Número verificado</span>
+                </div>
+
+                <ng-template #noVerificado>
+                  <div
+                    style="
+                      background-color: #ffdee1;
+                      padding: 10px;
+                      border-radius: 20px;
+                      display: flex;
+                      width: 75%;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="
+                        width: 8px;
+                        height: 8px;
+                        background-color: red;
+                        border-radius: 50%;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    ></span>
+                    <span style="color: #580d14">Número no verificado</span>
+                  </div>
+                </ng-template>
+              </td>
+            </ng-container> -->
+
+            <div
+              class="d-flex justify-content-between mt-2"
+              *ngIf="claveRol != 35"
+            >
+              <button
+                mat-icon-button
+                matTooltip="Editar"
+                (click)="openDialogEditar(simpatizante)"
+              >
+                <i-tabler class="text-primary" name="edit"></i-tabler>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Teléfono"
+                (click)="
+                  openDialogTelefono(
+                    simpatizante.telefono_celular
+                      ? 'editarTelefono'
+                      : 'guardarTelefono',
+                    simpatizante
+                  )
+                "
+              >
+                <i-tabler
+                  class="text-warning"
+                  [name]="simpatizante.telefono_celular ? 'phone' : 'phone-off'"
+                ></i-tabler>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="INE"
+                (click)="
+                  openDialogIne(
+                    simpatizante.foto_ine ? 'editarIne' : 'guardarIne',
+                    simpatizante
+                  )
+                "
+              >
+                <i-tabler
+                  class="text-accent"
+                  [name]="simpatizante.foto_ine ? 'id' : 'id-off'"
+                ></i-tabler>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Ubicación"
+                (click)="
+                  openDialogCoordenadas(
+                    simpatizante?.coordenadas?.coordinates
+                      ? 'editarCoordenadas'
+                      : 'guardarCoordenadas',
+                    simpatizante
+                  )
+                "
+              >
+                <i-tabler
+                  class="text-success"
+                  [name]="
+                    simpatizante?.coordenadas?.coordinates
+                      ? 'map-pin'
+                      : 'map-pin-off'
+                  "
+                ></i-tabler>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <mat-paginator
+        [length]="simpatizantes().length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[100]"
+        showFirstLastButtons
+        (page)="pageIndex = $event.pageIndex"
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<!--<mat-card class="cardWithShadow">-->
+<!--  <mat-card-content class="p-24">-->
+<!--    <div class="table-responsive">-->
+<!--      <table mat-table [dataSource]="dataSource" class="w-100">-->
+
+<!--        <ng-container matColumnDef="nombre">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> Nombre</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante"-->
+<!--              class="f-s-14">{{ simpatizante.nombre + ' ' + simpatizante.ap_paterno + ' ' + simpatizante.ap_materno }}-->
+<!--          </td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="clave_elector">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> Clave de lector</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14">{{ simpatizante.clave_elector }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="curp">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">CURP</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.curp }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="sexo">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Sexo</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14">-->
+<!--            {{ simpatizante.sexo === 'Hombre' ? 'H' : (simpatizante.sexo === 'Mujer' ? 'M' : simpatizante.sexo) }}-->
+<!--          </td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="estado">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Estado</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.estado }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="municipio">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Municipio</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.municipio }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="seccion">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Sección</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.seccion }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="telefono_celular">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Teléfono celular</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.telefono_celular ? simpatizante.telefono_celular : 'Sin número registrado' }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="foto_ine">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">INE</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante.foto_ine ? '🟢 INE guardada' : '🔴 Sin INE guardada' }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="coordenadas">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Coordenadas</th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="f-s-14"> {{ simpatizante?.coordenadas?.coordinates ? '🟢 Coordenadas guardadas' : '🔴 Sin coordenadas guardadas' }}</td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="acciones">-->
+<!--          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">-->
+<!--            Acciones-->
+<!--          </th>-->
+<!--          <td mat-cell *matCellDef="let simpatizante" class="action-link">-->
+<!--            <a-->
+<!--              [ngClass]="{'disabled-link': simpatizante.clave_estatus === 2}"-->
+<!--              class="m-r-10 cursor-pointer "-->
+<!--              [matTooltip]="simpatizante.nombre_estatus === 'Deshabilitado' ? 'No se puede actualizar si el simpatizante está deshabilitado' : 'Actualizar simpatizante'"-->
+<!--              (click)="openDialogEditar(simpatizante)"-->
+<!--            >-->
+<!--              <i-tabler name="edit" class="icon-18"></i-tabler>-->
+<!--            </a>-->
+
+<!--            <a-->
+<!--              class="m-r-10 cursor-pointer"-->
+<!--              [matTooltip]="simpatizante.telefono_celular ? 'Número registrado: ' + simpatizante.telefono_celular: 'Sin número registrado'"-->
+<!--              (click)="openDialogTelefono(simpatizante.telefono_celular ? 'editarTelefono' : 'guardarTelefono', simpatizante)"-->
+<!--            >-->
+<!--              <i-tabler-->
+<!--                [name]="simpatizante.telefono_celular ? 'phone' : 'phone-off'"-->
+<!--                class="icon-18">-->
+<!--              </i-tabler>-->
+<!--            </a>-->
+
+<!--            <a-->
+<!--              class="m-r-10 cursor-pointer"-->
+<!--              [matTooltip]="simpatizante.foto_ine ? 'INE guardada' : 'Sin INE guardada'"-->
+<!--              (click)="openDialogIne(simpatizante.foto_ine ? 'editarIne' : 'guardarIne', simpatizante)"-->
+<!--            >-->
+<!--              <i-tabler-->
+<!--                [name]="simpatizante.foto_ine ? 'id' : 'id-off'"-->
+<!--                class="icon-18">-->
+<!--              </i-tabler>-->
+<!--            </a>-->
+
+<!--            <a-->
+<!--              class="m-r-10 cursor-pointer"-->
+<!--              [matTooltip]="simpatizante?.coordenadas?.coordinates ? 'Coordenadas guardadas' : 'Sin coordenadas guardadas'"-->
+<!--              (click)="openDialogCoordenadas(simpatizante?.coordenadas?.coordinates ? 'editarCoordenadas' : 'guardarCoordenadas', simpatizante)"-->
+<!--            >-->
+<!--              <i-tabler-->
+<!--                [name]="simpatizante?.coordenadas?.coordinates ? 'map-pin' : 'map-pin-off'"-->
+<!--                class="icon-18">-->
+<!--              </i-tabler>-->
+<!--            </a>-->
+
+<!--            <a-->
+<!--              class="m-r-10 cursor-pointer"-->
+<!--              [matTooltip]="simpatizante?.ejercio === '1' ? 'Votó' : 'No ha votado'"-->
+<!--              (click)="confirmarActualizarEjercio(simpatizante)"-->
+<!--            >-->
+<!--              <i-tabler-->
+<!--                [name]="simpatizante?.ejercio === '1' ? 'circle-check' : 'circle-x'"-->
+<!--                class="icon-18"-->
+<!--                [style.color]="simpatizante?.ejercio === '1' ? 'green' : 'red'"-->
+<!--              ></i-tabler>-->
+<!--            </a>-->
+
+<!--          </td>-->
+<!--        </ng-container>-->
+
+<!--        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--        <tr mat-row *matRowDef="let row; columns: displayedColumns"-->
+<!--            [ngClass]="{'disabled-row': row.clave_estatus === 2}"></tr>-->
+<!--      </table>-->
+<!--      <mat-paginator-->
+<!--        [pageSizeOptions]="[10, 20, 30]"-->
+<!--        showFirstLastButtons-->
+<!--      ></mat-paginator>-->
+<!--    </div>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->

@@ -1,0 +1,130 @@
+<!--  <mat-card-content class="p-24">-->
+<!--    <form [formGroup]="crearFormularioCoordenadas">-->
+<!--      @if(action === "guardarCoordenadas"){-->
+<!--        <h2 class="mb-4"><strong> Guardar Georreferenciación</strong></h2>-->
+<!--      }-->
+<!--      @else{-->
+<!--        <h2 class="mb-4"><strong> Actualizar Georreferenciación</strong></h2>-->
+<!--      }-->
+
+<!--      <h3 class="mt-3"><strong>Ubicación (Selecciona en el mapa o escribir latitud y longitud)</strong></h3>-->
+<!--      <div id="mapaCasilla" style="height: 450px; width: 100%; border: 1px solid #ccc; margin-bottom: 15px; border-radius: 4px;">-->
+<!--      </div>-->
+
+<!--      <div formGroupName="coordenadas" class="row">-->
+<!--        <div class="col-lg-6">-->
+<!--          <mat-form-field appearance="outline" class="w-100">-->
+<!--            <mat-label>Latitud</mat-label>-->
+<!--            <mat-icon matPrefix>gps_fixed</mat-icon>-->
+<!--            <input matInput type="number" formControlName="latitud" placeholder="Ej. 19.3190">-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('required') && crearFormularioCoordenadas.touched">-->
+<!--              Latitud obligatoria.-->
+<!--            </mat-error>-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('min') || crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('max')">-->
+<!--              Latitud debe estar entre -90 y 90.-->
+<!--            </mat-error>-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('pattern') && crearFormularioCoordenadas.touched">-->
+<!--              Formato de latitud inválido.-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--        <div class="col-lg-6">-->
+<!--          <mat-form-field appearance="outline" class="w-100">-->
+<!--            <mat-label>Longitud</mat-label>-->
+<!--            <mat-icon matPrefix>gps_fixed</mat-icon>-->
+<!--            <input matInput type="number" formControlName="longitud" placeholder="Ej. -98.2380">-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('required') && crearFormularioCoordenadas.touched">-->
+<!--              Longitud obligatoria.-->
+<!--            </mat-error>-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('min') || crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('max')">-->
+<!--              Longitud debe estar entre -180 y 180.-->
+<!--            </mat-error>-->
+<!--            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('pattern') && crearFormularioCoordenadas.touched">-->
+<!--              Formato de longitud inválido.-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <mat-dialog-actions class="mt-4">-->
+<!--        @if(action === "guardarCoordenadas"){-->
+<!--          <button mat-flat-button color="primary" [disabled]="!crearFormularioCoordenadas.valid || isSubmitting"-->
+<!--                  (click)="guardarCoordenadasSimpatizante()">-->
+<!--            Guardar-->
+<!--          </button>-->
+<!--        }-->
+<!--        @else{-->
+<!--          <button mat-flat-button color="primary" [disabled]="!crearFormularioCoordenadas.valid || isSubmitting"-->
+<!--                  (click)="guardarCoordenadasSimpatizante()">-->
+<!--            Actualizar-->
+<!--          </button>-->
+<!--        }-->
+<!--        <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>-->
+<!--      </mat-dialog-actions>-->
+
+<!--    </form>-->
+<!--  </mat-card-content>-->
+
+
+<h2 mat-dialog-title>
+  @if(action === "guardarCoordenadas"){
+    Guardar Georreferenciación
+  }
+  @else{
+    Actualizar Georreferenciación
+  }
+</h2>
+
+<mat-dialog-content style="max-height: 70vh; overflow-y: auto;">
+  <mat-card-content class="p-24">
+    <form [formGroup]="crearFormularioCoordenadas">
+      <h3 class="mt-3"><strong>Ubicación (Selecciona en el mapa o escribir latitud y longitud)</strong></h3>
+      <div id="mapaCasilla" style="height: 450px; width: 100%; border: 1px solid #ccc; margin-bottom: 15px; border-radius: 4px;">
+      </div>
+
+      <div formGroupName="coordenadas" class="row">
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Latitud</mat-label>
+            <mat-icon matPrefix>gps_fixed</mat-icon>
+            <input matInput type="number" formControlName="latitud" placeholder="Ej. 19.3190">
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('required') && crearFormularioCoordenadas.touched">
+              Latitud obligatoria.
+            </mat-error>
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('min') || crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('max')">
+              Latitud debe estar entre -90 y 90.
+            </mat-error>
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.latitud')?.hasError('pattern') && crearFormularioCoordenadas.touched">
+              Formato de latitud inválido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Longitud</mat-label>
+            <mat-icon matPrefix>gps_fixed</mat-icon>
+            <input matInput type="number" formControlName="longitud" placeholder="Ej. -98.2380">
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('required') && crearFormularioCoordenadas.touched">
+              Longitud obligatoria.
+            </mat-error>
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('min') || crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('max')">
+              Longitud debe estar entre -180 y 180.
+            </mat-error>
+            <mat-error *ngIf="crearFormularioCoordenadas.get('coordenadas.longitud')?.hasError('pattern') && crearFormularioCoordenadas.touched">
+              Formato de longitud inválido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="mt-4">
+  <button mat-flat-button color="primary"
+          [disabled]="!crearFormularioCoordenadas.valid || isSubmitting"
+          (click)="guardarCoordenadasSimpatizante()">
+    @if(action === "guardarCoordenadas"){ Guardar } @else{ Actualizar }
+  </button>
+  <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+</mat-dialog-actions>

@@ -1,0 +1,210 @@
+<!-- MatCard principal -->
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-8 d-flex align-items-center">
+        <div class="col-lg-9">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Selecciona un evento</mat-label>
+            <mat-select
+              [(ngModel)]="eventoSeleccionado"
+              name="eventoSeleccionado"
+              (selectionChange)="obtenerTablaUsuarios()"
+            >
+              <mat-option *ngFor="let evento of eventos()" [value]="evento._id">
+                {{ evento.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<!-- Segundo MatCard -->
+<mat-card class="cardWithShadow" *ngIf="eventoSeleccionado">
+  <mat-card-content class="p-24">
+    <form [formGroup]="formFiltros">
+      <div class="row mt-3">
+        <!-- Columna de filtros + mensaje -->
+        <div class="col-lg-6">
+          <div class="row gx-3 gy-2 mb-4 align-items-end">
+            <!-- Título con ícono -->
+            <div class="col-lg-12 d-flex align-items-center gap-2 mb-4">
+              <mat-card-title class="m-0">CREAR UN MENSAJE</mat-card-title>
+              <mat-icon
+                matTooltip="Este mensaje será enviado a los simpatizantes que esten registrados en Telegram"
+                color="primary"
+                class="cursor-pointer"
+                >help_outline</mat-icon
+              >
+            </div>
+
+            <!-- Municipio -->
+            <div class="col-lg-12 mt-5">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Municipios</mat-label>
+                <mat-select
+                  formControlName="municipio"
+                  (selectionChange)="onChangeMunicipios($event.value)"
+                  multiple
+                >
+                  <mat-option
+                    *ngFor="let m of municipios()"
+                    [value]="m.municipio_clave"
+                  >
+                    {{ m.municipio_nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Secciones -->
+            <div class="col-lg-12">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Secciones</mat-label>
+                <mat-select formControlName="seccion" multiple>
+                  <mat-option
+                    *ngFor="let s of seccionesFiltradas()"
+                    [value]="s.seccion"
+                  >
+                    {{ s.seccion }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Editor -->
+            <div class="col-lg-12 mt-4 w-100">
+              <textarea
+                formControlName="mensaje"
+                placeholder="Escribe tu mensaje"
+                style="
+                  width: 100%;
+                  height: 400px;
+                  resize: none;
+                  padding: 10px;
+                  font-size: 16px;
+                "
+              ></textarea>
+            </div>
+
+            <!-- Botones -->
+            <div class="col-lg-12 mt-5">
+              <button
+                mat-stroked-button
+                color="warn"
+                type="button"
+                (click)="limpiarFiltros()"
+                class="w-100 mb-4"
+              >
+                Limpiar filtros
+              </button>
+
+              <br />
+              <br />
+
+              <button
+                mat-flat-button
+                color="primary"
+                type="button"
+                class="w-100"
+                (click)="enviarMensaje()"
+              >
+                Enviar mensaje
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna tabla -->
+        <div class="col-lg-6">
+          <div
+            *ngIf="simpatizantes"
+            style="
+              margin-top: 10px;
+              padding: 20px;
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              background-color: #fff;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+              overflow-x: auto;
+              max-width: 100%;
+            "
+          >
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <h2 class="m-0">Destinatarios</h2>
+              <mat-icon
+                matTooltip="Solo se enviará a simpatizantes que tengan número de teléfono verificado"
+                color="primary"
+                class="cursor-pointer"
+                >warning</mat-icon
+              >
+            </div>
+
+            <table
+              mat-table
+              [dataSource]="dataSource"
+              class="w-100"
+              style="min-width: 600px"
+            >
+              <!-- Columnas -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let s">
+                  {{ s.nombre }} {{ s.ap_paterno }} {{ s.ap_materno }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="telefono">
+                <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+                <td mat-cell *matCellDef="let s">{{ s.telefono_celular }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="seccion">
+                <th mat-header-cell *matHeaderCellDef>Sección</th>
+                <td mat-cell *matCellDef="let s">{{ s.seccion }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="municipio">
+                <th mat-header-cell *matHeaderCellDef>Municipio</th>
+                <td mat-cell *matCellDef="let s">
+                  {{ getNombreMunicipio(s.municipio) }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="sexo">
+                <th mat-header-cell *matHeaderCellDef>Sexo</th>
+                <td mat-cell *matCellDef="let s">
+                  {{ s.sexo === "H" ? "Hombre" : "Mujer" }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="verificado">
+                <th mat-header-cell *matHeaderCellDef>Teléfono Verificado</th>
+                <td mat-cell *matCellDef="let s">
+                  {{
+                    s.telefono_verificado === true
+                      ? "Verificado"
+                      : "NO verificado"
+                  }}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: columnas"
+                [ngClass]="{
+                  'fila-verificado': row.telefono_verificado === true,
+                  'fila-no-verificado': row.telefono_verificado === false
+                }"
+              ></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,70 @@
+<div class="sl-auth">
+    <!-- Logo / Branding -->
+    <header class="sl-header">
+        <app-branding class="sl-logo"></app-branding>
+    </header>
+
+    <!-- Contenido superior -->
+    <main class="sl-main">
+        <h1 class="sl-title">INTELIGENCIA TERRITORIAL</h1>
+        <p class="sl-sub">Introduce tus credenciales para continuar</p>
+
+        <!-- FORM: respeta tu TS -->
+        <form class="sl-form" [formGroup]="loginForm" (ngSubmit)="login()">
+            <!-- Correo -->
+            <mat-form-field appearance="outline" class="sl-field">
+                <mat-label>Correo electrónico</mat-label>
+                <input
+                        matInput
+                        formControlName="correo"
+                        type="email"
+                        autocomplete="username"
+                />
+                <mat-error *ngIf="loginForm.get('correo')?.hasError('required')">
+                    El correo es obligatorio
+                </mat-error>
+                <mat-error *ngIf="loginForm.get('correo')?.hasError('email')">
+                    Ingresa un correo válido
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Contraseña -->
+            <mat-form-field appearance="outline" class="sl-field">
+                <mat-label>Contraseña</mat-label>
+                <input
+                        matInput
+                        type="password"
+                        formControlName="contrasena"
+                        autocomplete="current-password"
+
+                />
+                <mat-error *ngIf="loginForm.get('contrasena')?.hasError('required')">
+                    La contraseña es obligatoria
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Botón -->
+            <button
+                    mat-flat-button
+                    class="sl-btn"
+                    type="submit"
+                    [disabled]="loginForm.invalid || solicitud"
+            >
+                <span *ngIf="!solicitud">Continuar</span>
+                <span *ngIf="solicitud">Entrando…</span>
+            </button>
+            <div class="sl-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+            <mat-progress-bar
+                    *ngIf="solicitud"
+                    mode="indeterminate"
+                    class="sl-progress"
+            ></mat-progress-bar>
+
+
+        </form>
+
+    </main>
+
+
+</div>

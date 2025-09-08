@@ -1,0 +1,36 @@
+.simpatizante-card {
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+  min-height: 220px;
+}
+
+.simpatizante-card:hover {
+  transform: translateY(-4px);
+}
+
+.ejercio-marker-inside {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px 0 0 8px; // estilo marcador redondeado por la izquierda
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.voto-ok {
+  background-color: #2e6df1 !important;
+}
+
+.voto-pendiente {
+  background-color: #525252 !important;
+}

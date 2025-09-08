@@ -1,0 +1,483 @@
+<mat-dialog-content>
+  <h2>EDICION DE LA INFORMACION DEL SIMPATIZANTE</h2>
+  <!-- Formulario (visible después del "procesamiento") -->
+  <form [formGroup]="formulario_actualizar_simpatizante">
+    <mat-card-content class="p-24">
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Nombre</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input matInput formControlName="nombre" placeholder="Nombre" />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('nombre')?.invalid &&
+                    formulario_actualizar_simpatizante.get('nombre')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Apellido Paterno</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input
+                  matInput
+                  formControlName="ap_paterno"
+                  placeholder="Apellido paterno"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('ap_paterno')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('ap_paterno')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Apellido Materno</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input
+                  matInput
+                  formControlName="ap_materno"
+                  placeholder="Apellido materno"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('ap_materno')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('ap_materno')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Clave elector</mat-label>
+                <mat-icon matPrefix>badge</mat-icon>
+                <input
+                  matInput
+                  formControlName="clave_elector"
+                  placeholder="Clave elector"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('clave_elector')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('clave_elector')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Curp</mat-label>
+                <mat-icon matPrefix>badge</mat-icon>
+                <input matInput formControlName="curp" placeholder="Curp" />
+                <mat-error
+                  *ngIf="formulario_actualizar_simpatizante.get('curp')?.errors?.['required']"
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+                <mat-error
+                  *ngIf="formulario_actualizar_simpatizante.get('curp')?.errors?.['pattern']"
+                >
+                  Formato de CURP inválido. Debe ser de 18 caracteres en
+                  mayúsculas.
+                </mat-error>
+                <mat-error
+                  *ngIf="formulario_actualizar_simpatizante.get('curp')?.errors?.['curpExistente']"
+                >
+                  CURP ya esta registrado
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Sexo</mat-label>
+                <mat-icon matPrefix>wc</mat-icon>
+                <input matInput formControlName="sexo" placeholder="Sexo" />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('sexo')?.invalid &&
+                    formulario_actualizar_simpatizante.get('sexo')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <mat-icon matPrefix>calendar_today</mat-icon>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="fecha_nacimiento"
+                  placeholder="Fecha de nacimiento"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('fecha_nacimiento')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('fecha_nacimiento')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3><strong> Domicilio</strong></h3>
+      <div formGroupName="domicilio" class="row">
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Calle</mat-label>
+                <mat-icon matPrefix>home</mat-icon>
+                <input matInput formControlName="calle" placeholder="Calle" />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('domicilio.calle')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('domicilio.calle')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Colonia</mat-label>
+                <mat-icon matPrefix>home</mat-icon>
+                <input
+                  matInput
+                  formControlName="colonia"
+                  placeholder="Colonia"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('domicilio.colonia')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('domicilio.colonia')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Código Postal</mat-label>
+                <mat-icon matPrefix>pin</mat-icon>
+                <input
+                  matInput
+                  formControlName="codigo_postal"
+                  placeholder="Código postal"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get(
+                      'domicilio.codigo_postal'
+                    )?.invalid &&
+                    formulario_actualizar_simpatizante.get(
+                      'domicilio.codigo_postal'
+                    )?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Ciudad</mat-label>
+                <mat-icon matPrefix>location_city</mat-icon>
+                <input matInput formControlName="ciudad" placeholder="Ciudad" />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('domicilio.ciudad')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('domicilio.ciudad')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Estado</mat-label>
+                <mat-icon matPrefix>location_city</mat-icon>
+                <input matInput formControlName="estado" placeholder="Estado" />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('domicilio.estado')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('domicilio.estado')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-lg-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>No. Estado</mat-label>
+                <mat-icon matPrefix>location_city</mat-icon>
+                <input
+                  matInput
+                  formControlName="estado"
+                  placeholder="No. Estado"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('estado')?.invalid &&
+                    formulario_actualizar_simpatizante.get('estado')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!--                    <div class="col-lg-3">-->
+            <!--                      <mat-form-field appearance="outline" class="w-100">-->
+            <!--                        <mat-label>Municipio</mat-label>-->
+            <!--                        <mat-icon matPrefix>map</mat-icon>-->
+            <!--                        <input matInput formControlName="municipio" placeholder="Municipio"/>-->
+            <!--                        <mat-error-->
+            <!--                          *ngIf="formulario_actualizar_simpatizante.get('municipio')?.invalid && formulario_actualizar_simpatizante.get('municipio')?.touched">-->
+            <!--                          Este campo es obligatorio.-->
+            <!--                        </mat-error>-->
+            <!--                      </mat-form-field>-->
+            <!--                    </div>-->
+            <div class="col-lg-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Municipio</mat-label>
+                <mat-icon matPrefix>map</mat-icon>
+                <mat-select formControlName="municipio" placeholder="Municipio">
+                  <mat-option
+                    *ngFor="let m of municipios()"
+                    [value]="m.municipio_clave"
+                  >
+                    {{ m.municipio_clave + " - " + m.municipio_nombre }}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('municipio')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('municipio')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Localidad</mat-label>
+                <mat-icon matPrefix>map</mat-icon>
+
+                <mat-select formControlName="localidad">
+                  <!-- Campo de búsqueda -->
+                  <mat-option>
+                    <input
+                      matInput
+                      placeholder="Buscar localidad"
+                      [ngModel]="filtroLocalidad()"
+                      (ngModelChange)="filtroLocalidad.set($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="$event.stopPropagation()"
+                      (keydown)="$event.stopPropagation()"
+                    />
+                  </mat-option>
+
+                  <!-- Opciones filtradas -->
+                  <mat-option
+                    *ngFor="let loc of localidadesFiltradas()"
+                    [value]="loc.nombre_localidad"
+                  >
+                    {{ loc.nombre_localidad }}
+                  </mat-option>
+
+                  <!-- Si no hay coincidencias -->
+                  <mat-option
+                    *ngIf="
+                      localidadesFiltradas().length === 0 &&
+                      filtroLocalidad().trim() !== ''
+                    "
+                    (click)="agregarLocalidad(filtroLocalidad())"
+                  >
+                    <strong>AGREGAR:</strong> "{{ filtroLocalidad() }}"
+                  </mat-option>
+                </mat-select>
+
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('localidad')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('localidad')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Emisión</mat-label>
+                <mat-icon matPrefix>schedule</mat-icon>
+                <input
+                  matInput
+                  formControlName="emision"
+                  placeholder="Emisión"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('emision')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('emision')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Sección</mat-label>
+                <mat-icon matPrefix>schedule</mat-icon>
+                <input
+                  matInput
+                  formControlName="seccion"
+                  placeholder="Sección"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('seccion')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('seccion')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Año Registro</mat-label>
+                <mat-icon matPrefix>list_alt</mat-icon>
+                <input
+                  matInput
+                  formControlName="anio_registro"
+                  placeholder="Año Registro"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('anio_registro')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('anio_registro')
+                      ?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Vigencia</mat-label>
+                <mat-icon matPrefix>event</mat-icon>
+                <input
+                  matInput
+                  formControlName="vigencia"
+                  placeholder="Vigencia"
+                />
+                <mat-error
+                  *ngIf="
+                    formulario_actualizar_simpatizante.get('vigencia')
+                      ?.invalid &&
+                    formulario_actualizar_simpatizante.get('vigencia')?.touched
+                  "
+                >
+                  Este campo es obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions class="mt-4 d-flex justify-content-end">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="actualizarSimpatizante()"
+          [disabled]="
+            !formulario_actualizar_simpatizante.dirty ||
+            !formulario_actualizar_simpatizante.valid
+          "
+        >
+          Actualizar informacion del simpatizante
+        </button>
+        &nbsp;&nbsp;
+        <button
+          mat-stroked-button
+          color="warn"
+          class="ml-2"
+          (click)="closeDialog()"
+        >
+          Cancelar
+        </button>
+      </mat-dialog-actions>
+    </mat-card-content>
+  </form>
+</mat-dialog-content>

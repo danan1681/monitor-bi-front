@@ -1,0 +1,55 @@
+<mat-dialog-content>
+  @if(action === "guardarEjercidos"){
+    <h2 class="mb-4"><strong> Guardar Ejercidos </strong></h2>
+  }
+  @else{
+    <h2 class="mb-4"><strong> Actualizar Ejercidos</strong></h2>
+  }
+  <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12">
+      <form [formGroup]="crearFormularioEjercidos">
+        <div class="row">
+          <!-- Columna de Campos del Usuario -->
+          <div class="col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-lg-12">
+                <p>Ejercidos actuales: {{ casilla?.ejercidos || 0 }} - Valor ingresado:{{ crearFormularioEjercidos.get('ejercidos')?.value || 0 }} - Total estimado: {{(Number(casilla?.ejercidos) || 0) + (Number(crearFormularioEjercidos.get('ejercidos')?.value) || 0) }}
+                </p>
+              </div>
+              <div class="col-lg-12">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Ejercidos</mat-label>
+                  <mat-icon matPrefix>pan_tool</mat-icon>
+                  <input type="text" matInput formControlName="ejercidos" pattern="[0-9]*" inputmode="numeric" placeholder="Ingrese los ejercidos de la casilla"/>
+                  <mat-error
+                    *ngIf="crearFormularioEjercidos.get('ejercidos')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="crearFormularioEjercidos.get('ejercidos')?.errors?.['pattern']">
+                    Ejercidos solo puede contener números.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Acciones del Formulario -->
+              <mat-dialog-actions class="mt-4">
+                @if(action === "guardarEjercidos"){
+                  <button mat-flat-button color="primary" [disabled]="!crearFormularioEjercidos.valid || isSubmitting " (click)="actualizarEjercidosCasilla()">
+                    Guardar
+                  </button>
+                }
+                @else{
+                  <button mat-flat-button color="primary" [disabled]="!crearFormularioEjercidos.valid || isSubmitting" (click)="actualizarEjercidosCasilla()">
+                    Actualizar
+                  </button>
+                }
+                <button mat-stroked-button color="warn" class="ml-2" (click)="cancelar()">Cancelar</button>
+              </mat-dialog-actions>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
